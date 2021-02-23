@@ -243,6 +243,7 @@ The result is cached for one second to avoid hiccups."
    `(cursor ((,class (:background ,light))))
 
    ;; Highlighting faces
+   `(line-number ((,class (:background ,background :foreground ,comment))))
    `(fringe ((,class (:background ,background :foreground ,comment))))
    `(border ((,class (:foreground ,background))))
    `(vertical-border ((,class (:foreground ,background))))
