@@ -355,6 +355,18 @@ The result is cached for one second to avoid hiccups."
    `(dired-header ((,class (:foreground ,blue :background ,background-blue :weight bold))))
    `(dired-directory ((,class (:foreground ,purple :weight bold))))
 
+   ;; centaur-tabs
+   `(centaur-tabs-default ((t (:background ,background :foreground ,light))))
+   `(centaur-tabs-selected ((t (:background ,background-lighter :foreground ,light :weight bold))))
+   `(centaur-tabs-unselected ((t (:background ,background-darker :foreground ,light :weight light))))
+   `(centaur-tabs-selected-modified ((t (:background ,background
+                                                     :foreground ,light :weight bold))))
+   `(centaur-tabs-unselected-modified ((t (:background ,background :weight light
+                                                       :foreground ,light))))
+   `(centaur-tabs-active-bar-face ((t (:background ,purple-dark))))
+   `(centaur-tabs-modified-marker-selected ((t (:inherit 'centaur-tabs-selected :foreground,light))))
+   `(centaur-tabs-modified-marker-unselected ((t (:inherit 'centaur-tabs-unselected :foreground,light))))
+
    ;; diff
    `(diff-removed ((,class (:background ,background-red :foreground ,red))))
    `(diff-added ((,class (:background ,background-green :foreground ,green))))
