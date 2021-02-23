@@ -60,6 +60,7 @@ Omni has supports for many packages, including the following:
 - ace-window
 - anzu
 - avy
+- centaur-tabs
 - clojure-mode
 - company-mode
 - diff-hl
