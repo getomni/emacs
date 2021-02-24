@@ -537,9 +537,9 @@ The result is cached for one second to avoid hiccups."
    `(org-column-title ((,class (:background ,background-blue :foreground ,blue :weight bold))))
 
    ;; org blocks
-   `(org-block-begin-line ((,class (:background ,bright-background-blue :foreground ,default :height 0.9 :extend t))))
-   `(org-block-end-line ((,class (:background ,bright-background-blue :foreground ,default :height 0.9 :extend t))))
-   `(org-block ((,class (:background ,background-blue :foreground ,default :extend t))))
+   `(org-block-begin-line ((,class (:background ,background-lighter :foreground ,light :height 0.9 :extend t))))
+   `(org-block-end-line ((,class (:background ,background-lighter :foreground ,light :height 0.9 :extend t))))
+   `(org-block ((,class (:background ,background-darker :foreground ,light :extend t))))
 
    ;; org-drill
    `(org-drill-hidden-cloze-face ((,class (:background ,red :foreground ,background))))
