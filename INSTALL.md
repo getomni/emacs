@@ -2,7 +2,7 @@
 
 #### Supported Packages
 
-You can find a complete of all supported packages on the [[./README.md][README]] file.
+You can find a complete of all supported packages on the [README](README.md) file.
 
 #### Install using MELPA
 
