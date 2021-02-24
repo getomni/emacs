@@ -1,5 +1,9 @@
 ### [Emacs](https://www.gnu.org/software/emacs/)
 
+#### Supported Packages
+
+You can find a complete of all supported packages on the [[./README.md][README]] file.
+
 #### Install using MELPA
 
 This theme is hosted on MELPA repository
