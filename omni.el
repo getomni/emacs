@@ -7,7 +7,7 @@
 ;; URL: https://github.com/getomni/omni
 ;; Version: 1.0
 ;; Package: omni
-;; Package-Requires: ((all-the-icons "2.0.0") (emacs "25.1") (flycheck))
+;; Package-Requires: ((all-the-icons "2.0.0") (emacs "25.1") (flycheck) (magit))
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -35,6 +35,7 @@
 ;;; Code:
 
 (require 'flycheck)
+(require 'magit)
 
 (defmacro cached-for (secs &rest body)
   "Cache for SECS the result of the evaluation of BODY."
@@ -179,18 +180,19 @@
 
 (defun omni--git-face-intern ()
   "Return the face to use based on the current repository status."
-  (if (magit-git-success "diff" "--quiet")
-      ;; nothing to commit because nothing changed
-      (if (zerop (length (magit-git-string
-                          "rev-list" (concat "origin/"
-                                             (magit-get-current-branch)
-                                             ".."
-                                             (magit-get-current-branch)))))
-          ;; nothing to push as well
-          'omni-ok-face
-        ;; nothing to commit, but some commits must be pushed
-        'omni-warning-face)
-    'omni-error-face))
+  (when (require 'magit nil 'noerror)
+    (if (magit-git-success "diff" "--quiet")
+	;; nothing to commit because nothing changed
+	(if (zerop (length (magit-git-string
+                            "rev-list" (concat "origin/"
+					       (magit-get-current-branch)
+					       ".."
+					       (magit-get-current-branch)))))
+            ;; nothing to push as well
+            'omni-ok-face
+          ;; nothing to commit, but some commits must be pushed
+          'omni-warning-face)
+      'omni-error-face)))
 
 (defun omni-git-face ()
   "Return the face to use based on the current repository status.
@@ -816,11 +818,13 @@ The result is cached for one second to avoid hiccups."
   "Return non-nil if the current window is active."
   (eq (selected-window) omni-selected-window))
 
-(add-hook 'window-configuration-change-hook #'omni--set-selected-window)
-(add-hook 'focus-in-hook #'omni--set-selected-window)
-(advice-add 'select-window :after #'omni--set-selected-window)
-(advice-add 'select-frame  :after #'omni--set-selected-window)
 
+(define-minor-mode omni-mode
+  "Enable styles for selected window"
+  (add-hook 'window-configuration-change-hook #'omni--set-selected-window)
+  (add-hook 'focus-in-hook #'omni--set-selected-window)
+  (advice-add 'select-window :after #'omni--set-selected-window)
+  (advice-add 'select-frame  :after #'omni--set-selected-window))
 
 ;;;###autoload
 (defun omni-setup-modeline-format ()
