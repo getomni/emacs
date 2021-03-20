@@ -7,7 +7,7 @@
 ;; URL: https://github.com/getomni/omni
 ;; Version: 1.0
 ;; Package: omni
-;; Package-Requires: ((all-the-icons "2.0.0"))
+;; Package-Requires: ((all-the-icons "2.0.0") (emacs "25.1") (flycheck))
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -33,6 +33,8 @@
 ;;
 
 ;;; Code:
+
+(require 'flycheck)
 
 (defmacro cached-for (secs &rest body)
   "Cache for SECS the result of the evaluation of BODY."
@@ -227,16 +229,10 @@ The result is cached for one second to avoid hiccups."
       (green (if (true-color-p) "#5ee279" "#67e480"))
       (green-light (if (true-color-p) "#82e796" "#94eca6"))
       (yellow (if (true-color-p) "#e8df7f" "#e7de79"))
-      (yellow-light (if (true-color-p) "#eae28c" "#e9e186"))
       (pink (if (true-color-p) "#ff7fc8" "#ff79c6"))
-      (pink-light (if (true-color-p) "#ff86cb" "#fe8ccd"))
       (peach "PeachPuff3")
-      (diff-added-background (if (true-color-p) "#375d4b" "#233b30"))
       (diff-added-refined-background (if (true-color-p) "#20946e" "#186e52"))
-      (diff-removed-background (if (true-color-p) "#af3838" "#963030"))
-      (diff-removed-refined-background (if (true-color-p) "#c35e69" "#bf505c"))
-      (diff-current-background (if (true-color-p) "#5275b7" "#4668ab"))
-      (diff-current-refined-background (if (true-color-p) "#548bc8" "#4580c4")))
+      (diff-removed-refined-background (if (true-color-p) "#c35e69" "#bf505c")))
   (custom-theme-set-faces
    'omni
    `(default ((,class (:background ,background :foreground ,light))))
@@ -787,8 +783,7 @@ The result is cached for one second to avoid hiccups."
 
    ;; Elbank
    `(elbank-progressbar-fill-face ((,class (:background ,diff-added-refined-background :weight bold))))
-   `(elbank-progressbar-overflow-face ((,class (:background ,diff-removed-refined-background :weight bold))))
-   )
+   `(elbank-progressbar-overflow-face ((,class (:background ,diff-removed-refined-background :weight bold)))))
 
   (custom-theme-set-variables
    'omni
@@ -850,8 +845,7 @@ The result is cached for one second to avoid hiccups."
                      "")
                   "  "
                   (:eval (omni-modeline-flycheck-status))
-                  "  " mode-line-modes mode-line-misc-info mode-line-end-spaces
-                  )))
+                  "  " mode-line-modes mode-line-misc-info mode-line-end-spaces)))
 
 ;;;###autoload
 (when (and (boundp 'custom-theme-load-path) load-file-name)
