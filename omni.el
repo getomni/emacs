@@ -1,9 +1,9 @@
-;;; omni.el --- A dark theme for Emacs -*- lexical-binding: t -*-
+;;; omni.el --- A dark theme -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2021 Matheus de Souza Pessanha
 
 ;; Author: Matheus Pessanha <mdsp@boosting.tech>
-;; Keywords: themes
+;; Keywords: theme, dark
 ;; URL: https://github.com/getomni/omni
 ;; Version: 1.0
 ;; Package: omni
@@ -31,7 +31,7 @@
 
 ;;; Code:
 
-(defmacro cached-for (secs &rest body)
+(defmacro omni--cached-for (secs &rest body)
   "Cache for SECS the result of the evaluation of BODY."
   (declare (debug t))
   (let ((cache (make-symbol "cache"))
@@ -98,47 +98,47 @@
 (defvar omni-buffer-coding '(:eval (unless (eq buffer-file-coding-system (default-value 'buffer-file-coding-system))
                                      mode-line-mule-info)))
 
-(defun true-color-p ()
+(defun omni--true-color-p ()
   "Return non-nil on displays that support 256 colors."
   (or
    (display-graphic-p)
    (= (tty-display-color-cells) 16777216)))
 
 (let ((class '((class color) (min-colors 89)))
-      (default (if (true-color-p) "#abb2bf" "#afafaf"))
-      (light (if (true-color-p) "#cbcbd3" "#e1e1e6"))
-      (background (if (true-color-p) "#231e2f" "#191622"))
-      (background-darker (if (true-color-p) "#2b253a" "#110f17"))
-      (background-lighter (if (true-color-p) "#272236" "#231e2f"))
-      (mode-line (if (true-color-p) "#1c2129" "#222222"))
-      (background-red (if (true-color-p) "#432b2b" "#221616"))
-      (bright-background-red (if (true-color-p) "#825353" "#744b4b"))
-      (background-purple (if (true-color-p) "#3b2b43" "#1e1622"))
-      (background-blue (if (true-color-p) "#2b2b43" "#161622"))
-      (bright-background-blue (if (true-color-p) "#535382" "#4b4b74"))
-      (background-green (if (true-color-p) "#31432b" "#192216"))
-      (bright-background-green (if (true-color-p) "#5f8253" "#55744b"))
-      (background-orange (if (true-color-p) "#43392b" "#221d16"))
-      (hl-line (if (true-color-p) "#51546c" "#44475a"))
-      (grey (if (true-color-p) "#cccccc" "#cccccc"))
-      (grey-dark (if (true-color-p) "#666666" "#666666"))
-      (highlight (if (true-color-p) "#51515f" "#41414d"))
-      (comment (if (true-color-p) "#544779" "#483c67"))
-      (orange (if (true-color-p) "#e6985b" "#e89e64"))
-      (orange-light (if (true-color-p) "#eaaf7f" "#eebb92"))
-      (red (if (true-color-p) "#e75a72" "#e96379"))
-      (purple (if (true-color-p) "#9183c3" "#988bC7"))
-      (purple-light (if (true-color-p) "#a69bce" "#a296cc"))
-      (purple-dark (if (true-color-p) "#6251a7" "#5e4d9f"))
-      (blue (if (true-color-p) "#6dccde" "#78d1e1"))
-      (blue-dark (if (true-color-p) "#2db5cd" "#2baec5"))
-      (green (if (true-color-p) "#5ee279" "#67e480"))
-      (green-light (if (true-color-p) "#82e796" "#94eca6"))
-      (yellow (if (true-color-p) "#e8df7f" "#e7de79"))
-      (pink (if (true-color-p) "#ff7fc8" "#ff79c6"))
+      (default (if (omni--true-color-p) "#abb2bf" "#afafaf"))
+      (light (if (omni--true-color-p) "#cbcbd3" "#e1e1e6"))
+      (background (if (omni--true-color-p) "#231e2f" "#191622"))
+      (background-darker (if (omni--true-color-p) "#2b253a" "#110f17"))
+      (background-lighter (if (omni--true-color-p) "#272236" "#231e2f"))
+      (mode-line (if (omni--true-color-p) "#1c2129" "#222222"))
+      (background-red (if (omni--true-color-p) "#432b2b" "#221616"))
+      (bright-background-red (if (omni--true-color-p) "#825353" "#744b4b"))
+      (background-purple (if (omni--true-color-p) "#3b2b43" "#1e1622"))
+      (background-blue (if (omni--true-color-p) "#2b2b43" "#161622"))
+      (bright-background-blue (if (omni--true-color-p) "#535382" "#4b4b74"))
+      (background-green (if (omni--true-color-p) "#31432b" "#192216"))
+      (bright-background-green (if (omni--true-color-p) "#5f8253" "#55744b"))
+      (background-orange (if (omni--true-color-p) "#43392b" "#221d16"))
+      (hl-line (if (omni--true-color-p) "#51546c" "#44475a"))
+      (grey (if (omni--true-color-p) "#cccccc" "#cccccc"))
+      (grey-dark (if (omni--true-color-p) "#666666" "#666666"))
+      (highlight (if (omni--true-color-p) "#51515f" "#41414d"))
+      (comment (if (omni--true-color-p) "#544779" "#483c67"))
+      (orange (if (omni--true-color-p) "#e6985b" "#e89e64"))
+      (orange-light (if (omni--true-color-p) "#eaaf7f" "#eebb92"))
+      (red (if (omni--true-color-p) "#e75a72" "#e96379"))
+      (purple (if (omni--true-color-p) "#9183c3" "#988bC7"))
+      (purple-light (if (omni--true-color-p) "#a69bce" "#a296cc"))
+      (purple-dark (if (omni--true-color-p) "#6251a7" "#5e4d9f"))
+      (blue (if (omni--true-color-p) "#6dccde" "#78d1e1"))
+      (blue-dark (if (omni--true-color-p) "#2db5cd" "#2baec5"))
+      (green (if (omni--true-color-p) "#5ee279" "#67e480"))
+      (green-light (if (omni--true-color-p) "#82e796" "#94eca6"))
+      (yellow (if (omni--true-color-p) "#e8df7f" "#e7de79"))
+      (pink (if (omni--true-color-p) "#ff7fc8" "#ff79c6"))
       (peach "PeachPuff3")
-      (diff-added-refined-background (if (true-color-p) "#20946e" "#186e52"))
-      (diff-removed-refined-background (if (true-color-p) "#c35e69" "#bf505c")))
+      (diff-added-refined-background (if (omni--true-color-p) "#20946e" "#186e52"))
+      (diff-removed-refined-background (if (omni--true-color-p) "#c35e69" "#bf505c")))
   (custom-theme-set-faces
    'omni
    `(default ((,class (:background ,background :foreground ,light))))
@@ -741,5 +741,6 @@
 	       (file-name-as-directory (file-name-directory load-file-name))))
 
 (provide-theme 'omni)
+(provide 'omni)
 
 ;;; omni.el ends here
