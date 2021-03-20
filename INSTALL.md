@@ -22,36 +22,23 @@ If you are a git user, you can install the theme by cloning the repo:
 
 Download using the [GitHub .zip download](https://github.com/getomni/emacs/archive/main.zip) option and unzip them.
 
-#### Mode-line format (optional)
+#### Activating theme manually
 
-Evaluate `omni-setup-modeline-format` to enable the custom mode-line-format:
+1. Create a directory called `elisp` on your `emacs` config path.
+2. Place the `omni.el` file on this directory
+3. Add the following to your `init.el`:
+```elisp
+(add-to-list 'load-path "<emacs-config-path>/elisp/")
 
-<p align="center">
-  <img alt="Emacs Mode-line based on Omni" src="./modeline_screenshot.png">
-</p>
-
-
-#### Note
-
-The custom mode line provided with `omni-theme` uses the [all-the-icons](https://github.com/domtronn/all-the-icons.el) package. The package itself is installed along with `omni-theme`.
-
-However, it is necessary to install the `fonts` in the `fonts` directory included in `all-the-icons` repository as explained in its `README`:
-
-> in order for the icons to work you will need to install the Resource Fonts included in this package, they are available in the > fonts directory.
-
-Or you can run the following command:
-
+(load-theme 'omni t)
 ```
-M-x all-the-icons-install-fonts RET
-```
+ps: replace `<emacs-config-path>` with the desired path, example: `~/.emacs.d/`
 
-#### Activating theme
+#### Activating theme installed from MELPA
 
 1. Add the following to you `init.el`:
 ```elisp
 (load-theme 'omni t)
-;; Optionally setup the modeline
-(omni-setup-modeline-format)
 ```
 
 Or execute `M-x load-theme RET omni RET`.
