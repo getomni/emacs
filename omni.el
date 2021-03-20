@@ -6,7 +6,7 @@
 ;; Keywords: themes
 ;; URL: https://github.com/getomni/omni
 ;; Version: 1.0
-;; Package: omni-theme
+;; Package: omni
 ;; Package-Requires: ((all-the-icons "2.0.0"))
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -20,7 +20,7 @@
 ;; GNU General Public License for more details.
 
 ;; You should have received a copy of the GNU General Public License
-;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+;; along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 ;; This file is NOT part of GNU Emacs
 
@@ -859,9 +859,5 @@ The result is cached for one second to avoid hiccups."
                (file-name-as-directory (file-name-directory load-file-name))))
 
 (provide-theme 'omni)
-
-;; Local Variables:
-;; no-byte-compile: t
-;; End:
 
 ;;; omni.el ends here
