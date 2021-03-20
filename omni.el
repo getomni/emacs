@@ -7,7 +7,7 @@
 ;; URL: https://github.com/getomni/omni
 ;; Version: 1.0
 ;; Package: omni
-;; Package-Requires: ((all-the-icons "2.0.0") (emacs "25.1") (flycheck) (magit))
+;; Package-Requires: ((emacs "25.1"))
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -28,14 +28,8 @@
 ;;
 ;; A dark theme heavily inspired from Dracula.
 ;;
-;; An optional mode-line format can be enabled with
-;; `omni-setup-modeline-format'.
-;;
 
 ;;; Code:
-
-(require 'flycheck)
-(require 'magit)
 
 (defmacro cached-for (secs &rest body)
   "Cache for SECS the result of the evaluation of BODY."
@@ -101,104 +95,14 @@
   '((t :foreground "#e96379"))
   "Face for error status in the mode-line.")
 
-(defvar omni-modeline-position '(:eval (propertize ":%l:%c %p " 'face (if (omni--active-window-p)
-                                                                          'omni-buffer-position-face
-                                                                        'mode-line-inactive)))
-  "Mode line construct for displaying the position in the buffer.")
-
-(defvar omni-modeline-buffer-identification '(:eval (propertize "%b" 'face 'bold))
-  "Mode line construct for displaying the position in the buffer.")
-
-(defvar omni-modeline-modified '(:eval (if (buffer-modified-p (current-buffer))
-                                           (all-the-icons-faicon "floppy-o"
-                                                                 :height 0.9
-                                                                 :v-adjust 0
-                                                                 :face (if (omni--active-window-p)
-                                                                           'omni-modified-face
-                                                                         'mode-line-inactive))
-                                         (all-the-icons-faicon "check"
-                                                               :height 0.9
-                                                               :v-adjust 0
-                                                               :face (if (omni--active-window-p)
-                                                                         'omni-not-modified-face
-                                                                       'mode-line-inactive)))))
-
-(defvar omni-modeline-ro '(:eval (if buffer-read-only
-                                     (if (omni--active-window-p)
-                                         (progn
-                                           (propertize "RO " 'face 'omni-ro-face))
-                                       (propertize "RO " 'face 'bold))
-                                   "")))
-
 (defvar omni-buffer-coding '(:eval (unless (eq buffer-file-coding-system (default-value 'buffer-file-coding-system))
                                      mode-line-mule-info)))
-
-(defvar omni-modeline-vc '(vc-mode ("   "
-                                    (:eval (all-the-icons-faicon "code-fork"
-                                                                 :height 0.9
-                                                                 :v-adjust 0
-                                                                 :face (when (omni--active-window-p)
-                                                                         (omni-git-face))))
-                                    (:eval (when (eq omni-theme-display-vc-status 'full)
-                                             (propertize (truncate-string-to-width vc-mode 25 nil nil "...")
-                                                         'face (when (omni--active-window-p)
-                                                                 (omni-git-face))))))))
-
-(defun omni-modeline-flycheck-status ()
-  "Return the status of flycheck to be displayed in the mode-line."
-  (when flycheck-mode
-    (let* ((text (pcase flycheck-last-status-change
-                   (`finished (if flycheck-current-errors
-                                  (let ((count (let-alist (flycheck-count-errors flycheck-current-errors)
-                                                 (+ (or .warning 0) (or .error 0)))))
-                                    (propertize (format "✖ %s Issue%s" count (if (eq 1 count) "" "s"))
-                                                'face (omni-face-when-active 'omni-error-face)))
-                                (propertize "✔ No Issues"
-                                            'face (omni-face-when-active 'omni-ok-face))))
-                   (`running     (propertize "⟲ Running"
-                                             'face (omni-face-when-active 'omni-warning-face)))
-                   (`no-checker  (propertize "⚠ No Checker"
-                                             'face (omni-face-when-active 'omni-warning-face)))
-                   (`not-checked "✖ Disabled")
-                   (`errored     (propertize "⚠ Error"
-                                             'face (omni-face-when-active 'omni-error-face)))
-                   (`interrupted (propertize "⛔ Interrupted"
-                                             'face (omni-face-when-active 'omni-error-face)))
-                   (`suspicious  ""))))
-      (propertize text
-                  'help-echo "Show Flycheck Errors"
-                  'local-map (make-mode-line-mouse-map
-                              'mouse-1 #'flycheck-list-errors)))))
 
 (defun true-color-p ()
   "Return non-nil on displays that support 256 colors."
   (or
    (display-graphic-p)
    (= (tty-display-color-cells) 16777216)))
-
-(defvar omni--git-face-cached (cached-for 1 (omni--git-face-intern)))
-
-(defun omni--git-face-intern ()
-  "Return the face to use based on the current repository status."
-  (when (require 'magit nil 'noerror)
-    (if (magit-git-success "diff" "--quiet")
-	;; nothing to commit because nothing changed
-	(if (zerop (length (magit-git-string
-                            "rev-list" (concat "origin/"
-					       (magit-get-current-branch)
-					       ".."
-					       (magit-get-current-branch)))))
-            ;; nothing to push as well
-            'omni-ok-face
-          ;; nothing to commit, but some commits must be pushed
-          'omni-warning-face)
-      'omni-error-face)))
-
-(defun omni-git-face ()
-  "Return the face to use based on the current repository status.
-The result is cached for one second to avoid hiccups."
-  (funcall omni--git-face-cached))
-
 
 (let ((class '((class color) (min-colors 89)))
       (default (if (true-color-p) "#abb2bf" "#afafaf"))
@@ -821,40 +725,20 @@ The result is cached for one second to avoid hiccups."
 
 (define-minor-mode omni-mode
   "Enable styles for selected window"
-  (add-hook 'window-configuration-change-hook #'omni--set-selected-window)
-  (add-hook 'focus-in-hook #'omni--set-selected-window)
-  (advice-add 'select-window :after #'omni--set-selected-window)
-  (advice-add 'select-frame  :after #'omni--set-selected-window))
-
-;;;###autoload
-(defun omni-setup-modeline-format ()
-  "Setup the mode-line format for omni."
-  (interactive)
-  (require 'flycheck)
-  (require 'magit)
-  (require 'all-the-icons)
-  (setq-default mode-line-format
-                `("%e"
-                  " "
-                  ,omni-modeline-ro " "
-                  ,omni-buffer-coding
-                  mode-line-frame-identification " "
-                  " "
-                  ,omni-modeline-modified
-                  " "
-                  ,omni-modeline-buffer-identification
-                  ,omni-modeline-position
-                  ,(if omni-theme-display-vc-status
-                       omni-modeline-vc
-                     "")
-                  "  "
-                  (:eval (omni-modeline-flycheck-status))
-                  "  " mode-line-modes mode-line-misc-info mode-line-end-spaces)))
+  (if (boundp 'after-focus-change-function) ; emacs-version >= 27.0
+      (add-function :before
+                    after-focus-change-function
+                    #'omni--set-selected-window)
+    (with-no-warnings
+      (add-hook 'focus-in-hook #'omni--set-selected-window))
+    (add-hook 'window-configuration-change-hook #'omni--set-selected-window)
+    (advice-add 'select-window :after #'omni--set-selected-window)
+    (advice-add 'select-frame  :after #'omni--set-selected-window)))
 
 ;;;###autoload
 (when (and (boundp 'custom-theme-load-path) load-file-name)
   (add-to-list 'custom-theme-load-path
-               (file-name-as-directory (file-name-directory load-file-name))))
+	       (file-name-as-directory (file-name-directory load-file-name))))
 
 (provide-theme 'omni)
 
