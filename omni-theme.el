@@ -1,4 +1,4 @@
-;;; omni.el --- A dark theme -*- lexical-binding: t -*-
+;;; omni-theme.el --- A dark theme -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2021 Zoey de Souza Pessanha
 
@@ -6,7 +6,7 @@
 ;; Keywords: theme, dark
 ;; URL: https://github.com/getomni/omni
 ;; Version: 1.0
-;; Package: omni
+;; Package: omni-theme
 ;; Package-Requires: ((emacs "25.1"))
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -741,6 +741,6 @@
 	       (file-name-as-directory (file-name-directory load-file-name))))
 
 (provide-theme 'omni)
-(provide 'omni)
+(provide 'omni-theme)
 
-;;; omni.el ends here
+;;; omni-theme.el ends here
